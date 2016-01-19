@@ -1,0 +1,21 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'com.github.johnrengelman.shadow' version '1.2.2'
+}
+
+sourceCompatibility = 1.8
+
+mainClassName = 'CurrencyHatesMain'
+
+repositories {
+  mavenCentral()  
+}
+
+dependencies {
+  compile 'com.sparkjava:spark-core:2.2'
+  compile 'com.twilio.sdk:twilio-java-sdk:4.4.5'
+  testCompile 'junit:junit:4.12'
+}
+
+
