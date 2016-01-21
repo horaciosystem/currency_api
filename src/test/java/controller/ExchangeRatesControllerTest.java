@@ -1,5 +1,8 @@
 package controller;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,10 +17,12 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ExchangeRatesControllerTest {
     private static int PORT = 4567;
+    private JSONParser parser = new JSONParser();
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -31,12 +36,18 @@ public class ExchangeRatesControllerTest {
     }
 
     @Test
-    public void getAll() {
+    public void getAll() throws ParseException {
         UrlResponse response = executeRequest("GET", "/rates");
-        System.out.println(response);
         assertNotNull(response);
+        assertEquals(response.status, 200);
+        JSONObject body = null;
+        body = (JSONObject) parser.parse(response.body);
+        JSONObject quotes = (JSONObject) body.get("quotes");
+        System.out.println(quotes);
+        System.out.println(response.headers);
+        assertEquals(response.headers.get("Content-Type").get(0), "application/json");
+        assertNotNull(quotes);
     }
-
 
     private static UrlResponse executeRequest(String requestMethod, String path) {
         UrlResponse response = new UrlResponse();
@@ -48,16 +59,17 @@ public class ExchangeRatesControllerTest {
             response.body = IOUtils.toString(connection.getInputStream());
             response.status = connection.getResponseCode();
             response.headers = connection.getHeaderFields();
+            connection.disconnect();
             return response;
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            return new UrlResponse();
+            return null;
         } catch (ProtocolException e) {
             e.printStackTrace();
-            return new UrlResponse();
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
-            return new UrlResponse();
+            return null;
         }
     }
 
@@ -67,7 +79,7 @@ public class ExchangeRatesControllerTest {
         private int status;
 
         public String toString() {
-            return "Body: "+ body + ", Status " + status;
+            return "Body: " + body + ", Status " + status;
         }
     }
 
