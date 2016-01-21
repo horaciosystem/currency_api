@@ -6,7 +6,7 @@ plugins {
 
 sourceCompatibility = 1.8
 
-mainClassName = 'CurrencyHatesMain'
+mainClassName = 'CurrencyApiMain'
 
 repositories {
   mavenCentral()  
