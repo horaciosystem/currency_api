@@ -5,14 +5,14 @@ import jodd.http.HttpResponse;
 import model.ResponseError;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import util.JsonUtil;
 
 public class ExchangeRatesHttpService implements ExchangeRateService {
     private final String ACCESS_KEY = "10dea10860a0cd6fb526efef448f3e99";
-    ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public JsonNode getAll() {
-       return toJson(requestLiveRates());
+       return JsonUtil.responseToJson(requestLiveRates());
     }
 
     @Override
@@ -25,14 +25,5 @@ public class ExchangeRatesHttpService implements ExchangeRateService {
                 .query("access_key", ACCESS_KEY)
                 .send();
     }
-
-    private JsonNode toJson(HttpResponse response) {
-        try {
-            return mapper.readValue(response.body(), JsonNode.class);
-        } catch (Exception e) {
-            return new ResponseError(e.getMessage()).get();
-        }
-    }
-
 
 }

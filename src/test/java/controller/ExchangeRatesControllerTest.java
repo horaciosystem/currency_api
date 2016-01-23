@@ -24,10 +24,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
+import util.JsonUtil;
 
 public class ExchangeRatesControllerTest {
     private static int PORT = 4567;
-    ObjectMapper mapper = new ObjectMapper();
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -62,8 +62,8 @@ public class ExchangeRatesControllerTest {
     public void containsQuotesAttribute() throws ParseException, IOException {
         HttpResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
-        JsonNode body = mapper.readValue(response.body(), JsonNode.class);
-        JsonNode quotes = mapper.readValue(body.get("quotes"), JsonNode.class);
+        JsonNode body = JsonUtil.responseToJson(response);
+        JsonNode quotes = body.get("quotes");
         assertNotNull(quotes);
     }
 
@@ -71,8 +71,8 @@ public class ExchangeRatesControllerTest {
     public void quotesQuantity() throws ParseException, IOException {
         HttpResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
-        JsonNode body = mapper.readValue(response.body(), JsonNode.class);
-        JsonNode quotes = mapper.readValue(body.get("quotes"), JsonNode.class);
+        JsonNode body = JsonUtil.responseToJson(response);
+        JsonNode quotes = body.get("quotes");
         assertNotNull(quotes);
         assertEquals(quotes.size(), 168);
     }
