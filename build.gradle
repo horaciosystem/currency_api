@@ -1,8 +1,10 @@
 plugins {
   id 'java'
-    id 'application'
-    id 'com.github.johnrengelman.shadow' version '1.2.2'
+  id 'application'
+  id 'com.github.johnrengelman.shadow' version '1.2.2'
 }
+
+apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
@@ -15,6 +17,7 @@ repositories {
 dependencies {
   compile 'com.sparkjava:spark-core:2.2'
   compile 'com.twilio.sdk:twilio-java-sdk:4.4.5'
+  compile 'org.jodd:jodd-http:3.6.6'
   testCompile 'junit:junit:4.12'
 }
 

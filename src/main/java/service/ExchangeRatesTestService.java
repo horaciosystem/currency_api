@@ -25,7 +25,7 @@ public class ExchangeRatesTestService implements ExchangeRateService {
 
     private JSONObject readMockFile() {
         try {
-            return (JSONObject) parser.parse(new FileReader("src/test/resources/currency-mock.json"));
+            return (JSONObject) parser.parse(new FileReader("src/main/java/resources/currency-mock.json"));
         } catch (IOException e) {
             e.printStackTrace();
             return null;

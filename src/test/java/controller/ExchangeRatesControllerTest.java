@@ -19,6 +19,8 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 
 public class ExchangeRatesControllerTest {
     private static int PORT = 4567;
@@ -41,72 +43,42 @@ public class ExchangeRatesControllerTest {
 
     @Test
     public void respondsSuccefully() {
-        UrlResponse response = executeRequest("GET", "/rates");
+        HttpResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
-        assertEquals(response.status, 200);
+        assertEquals(response.statusCode(), 200);
     }
 
     @Test
     public void contentTypeAsJson() {
-        UrlResponse response = executeRequest("GET", "/rates");
+        HttpResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
-        assertEquals(response.headers.get("Content-Type").get(0), "application/json");
+        assertEquals(response.header("Content-Type"), "application/json");
     }
 
     @Test
     public void containsQuotesAttribute() throws ParseException {
-        UrlResponse response = executeRequest("GET", "/rates");
+        HttpResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
         JSONObject body = null;
-        body = (JSONObject) parser.parse(response.body);
+        body = (JSONObject) parser.parse(response.body());
         JSONObject quotes = (JSONObject) body.get("quotes");
         assertNotNull(quotes);
     }
 
     @Test
     public void quotesQuantity() throws ParseException {
-        UrlResponse response = executeRequest("GET", "/rates");
+        HttpResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
         JSONObject body = null;
-        body = (JSONObject) parser.parse(response.body);
+        body = (JSONObject) parser.parse(response.body());
         JSONObject quotes = (JSONObject) body.get("quotes");
         assertNotNull(quotes);
         assertEquals(quotes.size(), 168);
     }
 
-    private static UrlResponse executeRequest(String requestMethod, String path) {
-        UrlResponse response = new UrlResponse();
-        try {
-            URL url = new URL("http://localhost:" + PORT + path);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod(requestMethod);
-            connection.connect();
-            response.body = IOUtils.toString(connection.getInputStream());
-            response.status = connection.getResponseCode();
-            response.headers = connection.getHeaderFields();
-            connection.disconnect();
-            return response;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    private static HttpResponse executeRequest(String requestMethod, String path) {
+        String url = "http://localhost:" + PORT + path;
+        return HttpRequest.get(url).send();
     }
-
-    private static class UrlResponse {
-        public Map<String, List<String>> headers;
-        private String body;
-        private int status;
-
-        public String toString() {
-            return "Body: " + body + ", Status " + status;
-        }
-    }
-
 
 }

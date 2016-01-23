@@ -17,4 +17,10 @@ public class ExchangeRatesHttpService implements ExchangeRateService {
             foo.put("hello", "world");
         return foo;
     }
+
+    private void foo() {
+
+    }
+
+
 }
