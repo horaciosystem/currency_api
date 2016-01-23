@@ -1,5 +1,8 @@
 package controller;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -24,7 +27,7 @@ import jodd.http.HttpResponse;
 
 public class ExchangeRatesControllerTest {
     private static int PORT = 4567;
-    private JSONParser parser = new JSONParser();
+    ObjectMapper mapper = new ObjectMapper();
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -56,29 +59,30 @@ public class ExchangeRatesControllerTest {
     }
 
     @Test
-    public void containsQuotesAttribute() throws ParseException {
+    public void containsQuotesAttribute() throws ParseException, IOException {
         HttpResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
-        JSONObject body = null;
-        body = (JSONObject) parser.parse(response.body());
-        JSONObject quotes = (JSONObject) body.get("quotes");
+        JsonNode body = mapper.readValue(response.body(), JsonNode.class);
+        JsonNode quotes = mapper.readValue(body.get("quotes"), JsonNode.class);
         assertNotNull(quotes);
     }
 
     @Test
-    public void quotesQuantity() throws ParseException {
+    public void quotesQuantity() throws ParseException, IOException {
         HttpResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
-        JSONObject body = null;
-        body = (JSONObject) parser.parse(response.body());
-        JSONObject quotes = (JSONObject) body.get("quotes");
+        JsonNode body = mapper.readValue(response.body(), JsonNode.class);
+        JsonNode quotes = mapper.readValue(body.get("quotes"), JsonNode.class);
         assertNotNull(quotes);
         assertEquals(quotes.size(), 168);
     }
 
-    private static HttpResponse executeRequest(String requestMethod, String path) {
-        String url = "http://localhost:" + PORT + path;
-        return HttpRequest.get(url).send();
+    private static HttpResponse executeRequest(String method, String path) {
+        HttpRequest request = new HttpRequest();
+        return request.
+                method(method)
+                .port(PORT)
+                .path(path).send();
     }
 
 }

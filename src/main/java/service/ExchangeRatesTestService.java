@@ -1,37 +1,41 @@
 package service;
 
+import model.ResponseError;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
 public class ExchangeRatesTestService implements ExchangeRateService {
-    JSONParser parser = new JSONParser();
+    ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public JSONObject getAll() {
+    public JsonNode getAll() {
         return readMockFile();
     }
 
     @Override
-    public JSONObject getByCurrency(String currency) {
+    public JsonNode getByCurrency(String currency) {
         return null;
     }
 
-    private JSONObject readMockFile() {
+    private JsonNode readMockFile() {
         try {
-            return (JSONObject) parser.parse(new FileReader("src/main/java/resources/currency-mock.json"));
-        } catch (IOException e) {
+            return mapper.readValue((Reader) new FileReader("src/main/java/resources/currency-mock.json"), JsonNode.class);
+        } catch (Exception e) {
             e.printStackTrace();
-            return null;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+            return new ResponseError(e.getMessage()).get();
         }
     }
 

@@ -1,8 +1,9 @@
 package service;
+import org.codehaus.jackson.JsonNode;
 import org.json.simple.JSONObject;
 
 
 public interface ExchangeRateService {
-    JSONObject getAll();
-    JSONObject getByCurrency(String currency);
+    JsonNode getAll();
+    JsonNode getByCurrency(String currency);
 }
