@@ -1,20 +1,24 @@
 package controller;
 
 import controller.ExchangeRatesController;
+import service.ExchangeRateService;
 import service.ExchangeRatesHttpService;
 import service.ExchangeRatesTestService;
 
 public class CurrencyApiMain {
     public static void main(String[] args) {
+        ExchangeRateService service = null;
         String environment = args.length > 0 ? args[0] : "";
         if (environment.trim().isEmpty()) {
-            new ExchangeRatesController(new ExchangeRatesHttpService());
+            service = new ExchangeRatesHttpService();
         }
         else if ("testing".equals(environment)) {
-            new ExchangeRatesController(new ExchangeRatesTestService());
+            service = new ExchangeRatesTestService();
         } else {
             throw new IllegalArgumentException("Unknown environment");
         }
+
+        new ExchangeRatesController(service);
     }
 
 }
