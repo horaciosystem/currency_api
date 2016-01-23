@@ -35,18 +35,43 @@ public class ExchangeRatesControllerTest {
         Spark.stop();
     }
 
+    /*
+    * GET "/rates"
+    */
+
     @Test
-    public void getAll() throws ParseException {
+    public void respondsSuccefully() {
         UrlResponse response = executeRequest("GET", "/rates");
         assertNotNull(response);
         assertEquals(response.status, 200);
+    }
+
+    @Test
+    public void contentTypeAsJson() {
+        UrlResponse response = executeRequest("GET", "/rates");
+        assertNotNull(response);
+        assertEquals(response.headers.get("Content-Type").get(0), "application/json");
+    }
+
+    @Test
+    public void containsQuotesAttribute() throws ParseException {
+        UrlResponse response = executeRequest("GET", "/rates");
+        assertNotNull(response);
         JSONObject body = null;
         body = (JSONObject) parser.parse(response.body);
         JSONObject quotes = (JSONObject) body.get("quotes");
-        System.out.println(quotes);
-        System.out.println(response.headers);
-        assertEquals(response.headers.get("Content-Type").get(0), "application/json");
         assertNotNull(quotes);
+    }
+
+    @Test
+    public void quotesQuantity() throws ParseException {
+        UrlResponse response = executeRequest("GET", "/rates");
+        assertNotNull(response);
+        JSONObject body = null;
+        body = (JSONObject) parser.parse(response.body);
+        JSONObject quotes = (JSONObject) body.get("quotes");
+        assertNotNull(quotes);
+        assertEquals(quotes.size(), 168);
     }
 
     private static UrlResponse executeRequest(String requestMethod, String path) {
