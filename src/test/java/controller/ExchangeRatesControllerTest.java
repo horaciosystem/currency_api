@@ -1,34 +1,27 @@
 package controller;
 
+import boot.CurrencyApiMain;
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import spark.Spark;
-import spark.utils.IOUtils;
+import util.JsonUtil;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import jodd.http.HttpRequest;
-import jodd.http.HttpResponse;
-import util.JsonUtil;
 
 public class ExchangeRatesControllerTest {
     private static final int PORT = 4567;
     private static final String CURRENCIES = "/currencies";
+    private static final String BRL = CURRENCIES + "/BRL";
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -42,48 +35,102 @@ public class ExchangeRatesControllerTest {
     }
 
     /*
-    * GET "/rates"
+    * GET "/currencies"
     */
 
     @Test
-    public void respondsSuccefully() {
-        HttpResponse response = executeRequest("GET", CURRENCIES);
-        assertNotNull(response);
+    public void currenciesSuccefully() {
+        HttpResponse response = requestCurrencies(CURRENCIES);
         assertEquals(response.statusCode(), 200);
     }
 
     @Test
     public void contentTypeAsJson() {
-        HttpResponse response = executeRequest("GET", CURRENCIES);
-        assertNotNull(response);
+        HttpResponse response = requestCurrencies(CURRENCIES);
         assertEquals(response.header("Content-Type"), "application/json");
     }
 
     @Test
     public void containsQuotesAttribute() throws ParseException, IOException {
-        HttpResponse response = executeRequest("GET", CURRENCIES);
-        assertNotNull(response);
-        JsonNode body = JsonUtil.responseToJson(response);
+        JsonNode body = getCurrienciesBody(CURRENCIES);
         JsonNode quotes = body.get("quotes");
         assertNotNull(quotes);
     }
 
     @Test
     public void quotesQuantity() throws ParseException, IOException {
-        HttpResponse response = executeRequest("GET", CURRENCIES);
-        assertNotNull(response);
-        JsonNode body = JsonUtil.responseToJson(response);
+        JsonNode body = getCurrienciesBody(CURRENCIES);
         JsonNode quotes = body.get("quotes");
         assertNotNull(quotes);
         assertEquals(quotes.size(), 168);
     }
 
-    private static HttpResponse executeRequest(String method, String path) {
+    @Test
+    public void isDefaultSourceUSD() {
+        JsonNode body = getCurrienciesBody(CURRENCIES);
+        assertEquals(body.get("source").asText(), "USD");
+    }
+
+    /*
+    * GET /currencies/currency_id
+    * */
+
+    @Test
+    public void currencySuccefully() {
+        HttpResponse response = requestCurrencies(BRL);
+        assertEquals(response.statusCode(), 200);
+    }
+
+    @Test
+    public void currencyContentTypeAsJson() {
+        HttpResponse response = requestCurrencies(BRL);
+        assertEquals(response.header("Content-Type"), "application/json");
+    }
+
+    @Test
+    public void currencyContainsQuotesAttribute() throws ParseException, IOException {
+        JsonNode body = getCurrienciesBody(BRL);
+        JsonNode quotes = body.get("quotes");
+        assertNotNull(quotes);
+    }
+
+    @Test
+    public void currencyQuotesQuantity() throws ParseException, IOException {
+        JsonNode body = getCurrienciesBody(BRL);
+        JsonNode quotes = body.get("quotes");
+        assertNotNull(quotes);
+        assertEquals(quotes.size(), 1);
+    }
+
+    @Test
+    public void currencyHasDefaultSourceUSD() {
+        JsonNode body = getCurrienciesBody(BRL);
+        assertEquals(body.get("source").asText(), "USD");
+    }
+
+    private static HttpResponse executeRequest(String method, String path, Map<String, String> queryParams) {
         HttpRequest request = new HttpRequest();
         return request.
                 method(method)
                 .port(PORT)
-                .path(path).send();
+                .path(path)
+                .query(queryParams)
+                .send();
+    }
+
+    private Map<String, String> sourceParam(String source) {
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("source", source);
+        return queryParams;
+    }
+
+    private HttpResponse requestCurrencies(String path) {
+        return executeRequest("GET", path, sourceParam(""));
+    }
+
+    private JsonNode getCurrienciesBody(String path) {
+        HttpResponse response = requestCurrencies(path);
+        return JsonUtil.responseToJson(response);
     }
 
 }

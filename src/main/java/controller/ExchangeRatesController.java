@@ -8,10 +8,14 @@ import static spark.Spark.*;
 
 public class ExchangeRatesController {
 
-    public ExchangeRatesController(ExchangeRateService exchangeRateService) {
+    public ExchangeRatesController(ExchangeRateService exchangeService) {
 
         get("/currencies", (req, res) -> {
-            return exchangeRateService.getAll();
+            return exchangeService.getAll();
+        });
+
+        get("/currencies/:id", (req, res) -> {
+            return exchangeService.getByCurrency(req.params(":id"));
         });
 
         after((req, res) -> {

@@ -22,17 +22,17 @@ public class ExchangeRatesTestService implements ExchangeRateService {
 
     @Override
     public JsonNode getAll() {
-        return readMockFile();
+        return readMockFile("currencies-mock.json");
     }
 
     @Override
     public JsonNode getByCurrency(String currency) {
-        return null;
+        return readMockFile("currency-brl-mock.json");
     }
 
-    private JsonNode readMockFile() {
+    private JsonNode readMockFile(String fileName) {
         try {
-            return mapper.readValue((Reader) new FileReader("src/main/java/resources/currency-mock.json"), JsonNode.class);
+            return mapper.readValue((Reader) new FileReader("src/main/java/resources/"+fileName), JsonNode.class);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseError(e.getMessage()).get();

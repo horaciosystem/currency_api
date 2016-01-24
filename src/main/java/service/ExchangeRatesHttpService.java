@@ -17,12 +17,19 @@ public class ExchangeRatesHttpService implements ExchangeRateService {
 
     @Override
     public JsonNode getByCurrency(String currency) {
-        return null;
+        return JsonUtil.responseToJson(requestSpecifiedCurrency(currency));
     }
 
     private HttpResponse requestLiveRates() {
         return HttpRequest.get("http://apilayer.net/api/live")
                 .query("access_key", ACCESS_KEY)
+                .send();
+    }
+
+    private HttpResponse requestSpecifiedCurrency(String currency) {
+        return HttpRequest.get("http://apilayer.net/api/live")
+                .query("access_key", ACCESS_KEY)
+                .query("currencies", currency)
                 .send();
     }
 

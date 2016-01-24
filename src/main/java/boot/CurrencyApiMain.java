@@ -1,12 +1,13 @@
-package controller;
+package boot;
 
+import controller.ExchangeRatesController;
 import service.ExchangeRateService;
 import service.ExchangeRatesHttpService;
 import service.ExchangeRatesTestService;
 
 public class CurrencyApiMain {
     public static void main(String[] args) {
-        ExchangeRateService service = null;
+        ExchangeRateService service;
 
         String environment = args.length > 0 ? args[0] : "";
         if (environment.trim().isEmpty()) {
