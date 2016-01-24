@@ -3,7 +3,7 @@
 
 * **/currencies** - Return actual currencies.
 
-* **/currencies?source=BRL** - source - Return the currency to which all exchange rates are relative. (default: USD)
+* **/currencies?source=BRL** source - Return the currency to which all exchange rates are relative. (default: USD)
 
 ## Why
 I'm using this project for experimental purposes. So I'm using some lightweight frameworks and tools to lets project's structure and code simple, easy to read and with **no magical things**.
