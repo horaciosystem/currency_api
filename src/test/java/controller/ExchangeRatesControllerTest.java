@@ -27,7 +27,8 @@ import jodd.http.HttpResponse;
 import util.JsonUtil;
 
 public class ExchangeRatesControllerTest {
-    private static int PORT = 4567;
+    private static final int PORT = 4567;
+    private static final String CURRENCIES = "/currencies";
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -46,21 +47,21 @@ public class ExchangeRatesControllerTest {
 
     @Test
     public void respondsSuccefully() {
-        HttpResponse response = executeRequest("GET", "/rates");
+        HttpResponse response = executeRequest("GET", CURRENCIES);
         assertNotNull(response);
         assertEquals(response.statusCode(), 200);
     }
 
     @Test
     public void contentTypeAsJson() {
-        HttpResponse response = executeRequest("GET", "/rates");
+        HttpResponse response = executeRequest("GET", CURRENCIES);
         assertNotNull(response);
         assertEquals(response.header("Content-Type"), "application/json");
     }
 
     @Test
     public void containsQuotesAttribute() throws ParseException, IOException {
-        HttpResponse response = executeRequest("GET", "/rates");
+        HttpResponse response = executeRequest("GET", CURRENCIES);
         assertNotNull(response);
         JsonNode body = JsonUtil.responseToJson(response);
         JsonNode quotes = body.get("quotes");
@@ -69,7 +70,7 @@ public class ExchangeRatesControllerTest {
 
     @Test
     public void quotesQuantity() throws ParseException, IOException {
-        HttpResponse response = executeRequest("GET", "/rates");
+        HttpResponse response = executeRequest("GET", CURRENCIES);
         assertNotNull(response);
         JsonNode body = JsonUtil.responseToJson(response);
         JsonNode quotes = body.get("quotes");

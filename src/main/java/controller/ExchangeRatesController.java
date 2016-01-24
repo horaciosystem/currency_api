@@ -10,7 +10,7 @@ public class ExchangeRatesController {
 
     public ExchangeRatesController(ExchangeRateService exchangeRateService) {
 
-        get("/rates", (req, res) -> {
+        get("/currencies", (req, res) -> {
             return exchangeRateService.getAll();
         });
 
