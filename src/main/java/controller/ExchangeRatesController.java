@@ -11,7 +11,7 @@ public class ExchangeRatesController {
     public ExchangeRatesController(ExchangeRateService exchangeService) {
 
         get("/currencies", (req, res) -> {
-            return exchangeService.getAll();
+            return exchangeService.getAll("all");
         });
 
         get("/currencies/:id", (req, res) -> {

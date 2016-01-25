@@ -40,5 +40,6 @@
     <orderEntry type="library" name="Gradle: org.jodd:jodd-http:3.6.6" level="project" />
     <orderEntry type="library" name="Gradle: org.jodd:jodd-core:3.6.6" level="project" />
     <orderEntry type="library" name="Gradle: org.jodd:jodd-upload:3.6.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
   </component>
 </module>
