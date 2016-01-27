@@ -16,15 +16,9 @@ public class ExchangeRatesController {
         get("/currencies/:id", (req, res) -> exchangeService.getByCurrency(req.params(":id")));
 
         get("/convert", (req, res) -> {
-            String to = String.valueOf(req.attribute("to"));
-            double amount = (double) req.attribute("amount");
-
-            if (isValidParams(to, amount)) return exchangeService.convert(to, amount);
-            else {
-                return 404;
-            }
-//            halt(401, "Invalid Parameters!");
-//            return "";
+            String to = req.queryParams("to");
+            double amount = Double.valueOf(req.queryParams("amount"));
+            return exchangeService.convert(to, amount);
         });
 
         after((req, res) -> {
@@ -37,10 +31,5 @@ public class ExchangeRatesController {
         });
 
     }
-
-    private boolean isValidParams(String to, double amount) {
-        return !to.trim().isEmpty() && amount > 0;
-    }
-
 
 }

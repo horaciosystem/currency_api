@@ -124,6 +124,35 @@ public class ExchangeRatesControllerTest {
         assertEquals(response.statusCode(), 200);
     }
 
+    @Test
+    public void convertInvalidQueryParams() {
+        Map<String, String> params = new HashMap<>();
+        params.put("to", "");
+        params.put("amount", null);
+        HttpResponse response = requestCurrencies(CONVERT, params);
+        assertEquals(response.statusCode(), 400);
+    }
+
+    @Test
+    public void convertInvalidCurrencyTo() {
+        Map<String, String> params = new HashMap<>();
+        params.put("to", "HOR");
+        params.put("amount", "10");
+        HttpResponse response = requestCurrencies(CONVERT, params);
+        assertEquals(response.statusCode(), 400);
+        assertEquals(response.bodyText(), "Currency code not found");
+    }
+
+    @Test
+    public void convertToBRL() {
+        Map<String, String> params = queryParamsToConvert();
+        HttpResponse response = requestCurrencies(CONVERT, params);
+        System.out.println(response);
+        JsonNode body = JsonUtil.responseToJson(response);
+        assertEquals(body.get("result").asDouble(), 4.15785, 0);
+    }
+
+
     private Map<String, String> queryParamsToConvert() {
         queryParams.put("to", "BRL");
         queryParams.put("amount", "1");

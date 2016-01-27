@@ -13,7 +13,7 @@ public class CurrencyConverter {
         String currencyTo = "USD"+currency;
         JsonNode quotes = currencies.get("quotes");
         if (!quotes.has(currencyTo)) {
-            throw new InvalidParameterException("Currency Not Found");
+            throw new InvalidParameterException("Currency code not found");
         }
 
         String timestamp = currencies.get("timestamp").asText();
