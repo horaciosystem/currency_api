@@ -8,4 +8,5 @@ import java.util.concurrent.ExecutionException;
 public interface ExchangeRateService {
     JsonNode getAll(String filter) throws ExecutionException;
     JsonNode getByCurrency(String currency) throws ExecutionException;
+    JsonNode convert(String to, double amount);
 }

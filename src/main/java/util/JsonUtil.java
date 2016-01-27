@@ -1,9 +1,12 @@
 package util;
 
 import jodd.http.HttpResponse;
+import model.ConversionResult;
 import model.ResponseError;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import java.io.IOException;
 
 /**
  * Created by horacio on 1/23/16.
@@ -19,4 +22,7 @@ public class JsonUtil {
         }
     }
 
+    public static JsonNode toJson(Object object) {
+        return mapper.convertValue(object, JsonNode.class);
+    }
 }

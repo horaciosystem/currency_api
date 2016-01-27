@@ -1,21 +1,15 @@
 package service;
 
+import model.ConversionResult;
+import model.CurrencyConverter;
 import model.ResponseError;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import util.JsonUtil;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.concurrent.Callable;
 
 public class ExchangeRatesTestService implements ExchangeRateService {
     ObjectMapper mapper = new ObjectMapper();
@@ -28,6 +22,12 @@ public class ExchangeRatesTestService implements ExchangeRateService {
     @Override
     public JsonNode getByCurrency(String currency) {
         return readMockFile("currency-brl-mock.json");
+    }
+
+    @Override
+    public JsonNode convert(String to, double amount) {
+        ConversionResult conversionResult = CurrencyConverter.convert(to, amount, readMockFile("currencies-mock.json"));
+        return JsonUtil.toJson(conversionResult);
     }
 
     private JsonNode readMockFile(String fileName) {

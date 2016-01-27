@@ -24,6 +24,11 @@ public class ExchangeRatesHttpService implements ExchangeRateService {
         return JsonUtil.responseToJson(cache.get(currency));
     }
 
+    @Override
+    public JsonNode convert(String to, double amount) {
+        return null;
+    }
+
     private HttpResponse requestCurrencies(String currency) {
         String ACCESS_KEY = "10dea10860a0cd6fb526efef448f3e99";
 
