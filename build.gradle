@@ -19,6 +19,8 @@ dependencies {
   compile 'com.twilio.sdk:twilio-java-sdk:4.4.5'
   compile 'org.jodd:jodd-http:3.6.6'
   compile 'com.google.guava:guava:19.0'
-  testCompile 'junit:junit:4.12'
+  testCompile 'org.testng:testng:5.14.10'
 }
+
+test.useTestNG()
 
