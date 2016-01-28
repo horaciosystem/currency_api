@@ -5,7 +5,9 @@ Currency Api
 
 * **/currencies** - Return actual currencies.
 
-* **/currencies/:currency** Return the exchange rate for specified currency. i.e: /currencies/BRL  
+* **/currencies/:currency** - Return the exchange rate for specified currency. i.e: /currencies/BRL
+
+* **/convert? to = BRL & amount = 12** - Return the conversion result of specified amount and currency. ```to``` and ```amount``` are queryParameters.
 
 ## Motivation
 I'm using this project for experimental purposes. So I'm using some lightweight frameworks and tools to lets project's structure and code simple, easy to read and with **no magical things**.
@@ -24,6 +26,12 @@ http://jodd.org/doc/http.html
 > A simple in memory cache api.
 Google Guava - https://github.com/google/guava/tree/a9f8b899c07a33c2203b4e6cf84861646952aeed
 
+### currencylayer - 3rd part API
+> This project consumes exchange rates from ```currencylayer``` API.
+Reliable Exchange Rates & Currency Conversion for your Business. Real-time JSON API for 168 World Currencies https://currencylayer.com/
+**This projects uses a free account, for that reason, some features were not implemented. Like change the default currency and Conversion from another Currencies.**
+
+
 ## Tests
 ```sh
 # Test - Run all project's tests
@@ -32,7 +40,6 @@ gradle test
 
 ## Running
 ```sh
-# Run - Starts a HTTP Server at http://localhost:4567 
+# Run - Starts a HTTP Server at http://localhost:4567
 gradle run
 ```
-
