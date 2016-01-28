@@ -41,5 +41,9 @@
     <orderEntry type="library" name="Gradle: org.jodd:jodd-core:3.6.6" level="project" />
     <orderEntry type="library" name="Gradle: org.jodd:jodd-upload:3.6.6" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.testng:testng:5.14.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.beanshell:bsh:2.0b4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.beust:jcommander:1.12" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.yaml:snakeyaml:1.6" level="project" />
   </component>
 </module>
