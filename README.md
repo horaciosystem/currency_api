@@ -29,8 +29,7 @@ Google Guava - https://github.com/google/guava/tree/a9f8b899c07a33c2203b4e6cf848
 ### currencylayer - 3rd part API
 > This project consumes exchange rates from ```currencylayer``` API.
 Reliable Exchange Rates & Currency Conversion for your Business. Real-time JSON API for 168 World Currencies https://currencylayer.com/.
-
-**This projects uses a free account, for that reason, some features were not implemented. Like change the default currency and conversion from another currencies.**
+* **This projects uses a free account, for that reason, some features were not implemented. Like change the default currency and conversion from another currencies.**
 
 
 ## Tests
