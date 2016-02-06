@@ -15,7 +15,7 @@ public class ExchangeRatesTestService implements ExchangeRateService {
     ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public JsonNode getAll(String filter) {
+    public JsonNode getAll() {
         return readMockFile("currencies-mock.json");
     }
 
